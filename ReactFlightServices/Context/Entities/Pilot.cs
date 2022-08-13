@@ -5,6 +5,11 @@ namespace ReactFlightServices.Context.Entities
 {
     public partial class Pilot
     {
+        public Pilot()
+        {
+            FlightPilots = new HashSet<FlightPilot>();
+        }
+
         public int PilotId { get; set; }
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
@@ -15,5 +20,7 @@ namespace ReactFlightServices.Context.Entities
         public string ZipCode { get; set; } = null!;
         public bool Captain { get; set; }
         public string PilotEmail { get; set; } = null!;
+
+        public virtual ICollection<FlightPilot> FlightPilots { get; set; }
     }
 }

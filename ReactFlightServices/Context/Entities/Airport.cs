@@ -14,6 +14,7 @@ namespace ReactFlightServices.Context.Entities
         public int AirportId { get; set; }
         public string AirportName { get; set; } = null!;
         public string AirportCity { get; set; } = null!;
+        public bool AirportOpen { get; set; }
 
         public virtual ICollection<Terminal> Terminals { get; set; }
         public virtual ICollection<TicketClerk> TicketClerks { get; set; }

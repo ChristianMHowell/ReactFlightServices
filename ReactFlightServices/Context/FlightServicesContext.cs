@@ -17,10 +17,13 @@ namespace ReactFlightServices.Context
         {
         }
 
+        public virtual DbSet<Airline> Airlines { get; set; } = null!;
         public virtual DbSet<Airport> Airports { get; set; } = null!;
         public virtual DbSet<Crew> Crews { get; set; } = null!;
         public virtual DbSet<Flight> Flights { get; set; } = null!;
         public virtual DbSet<FlightGate> FlightGates { get; set; } = null!;
+        public virtual DbSet<FlightPilot> FlightPilots { get; set; } = null!;
+        public virtual DbSet<FlightStatusType> FlightStatusTypes { get; set; } = null!;
         public virtual DbSet<Gate> Gates { get; set; } = null!;
         public virtual DbSet<Passenger> Passengers { get; set; } = null!;
         public virtual DbSet<PassengerTicket> PassengerTickets { get; set; } = null!;
@@ -42,6 +45,13 @@ namespace ReactFlightServices.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Airline>(entity =>
+            {
+                entity.ToTable("Airline");
+
+                entity.Property(e => e.AirlineName).HasMaxLength(50);
+            });
+
             modelBuilder.Entity<Airport>(entity =>
             {
                 entity.ToTable("Airport");
@@ -83,6 +93,18 @@ namespace ReactFlightServices.Context
                     .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.FlightName).HasMaxLength(50);
+
+                entity.HasOne(d => d.FlightAirlineNavigation)
+                    .WithMany(p => p.Flights)
+                    .HasForeignKey(d => d.FlightAirline)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Flight_Airline");
+
+                entity.HasOne(d => d.FlightStatusNavigation)
+                    .WithMany(p => p.Flights)
+                    .HasForeignKey(d => d.FlightStatus)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Flight_FlightStatus");
             });
 
             modelBuilder.Entity<FlightGate>(entity =>
@@ -102,6 +124,36 @@ namespace ReactFlightServices.Context
                     .HasForeignKey(d => d.GateId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_FlightGate_Gate");
+            });
+
+            modelBuilder.Entity<FlightPilot>(entity =>
+            {
+                entity.HasKey(e => e.PilotFlightId)
+                    .HasName("PK__FlightPi__C5981F96B3104EFA");
+
+                entity.ToTable("FlightPilot");
+
+                entity.HasOne(d => d.Flight)
+                    .WithMany(p => p.FlightPilots)
+                    .HasForeignKey(d => d.FlightId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_FlightPilot_Flight");
+
+                entity.HasOne(d => d.Pilot)
+                    .WithMany(p => p.FlightPilots)
+                    .HasForeignKey(d => d.PilotId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_FlightPilot_Pilot");
+            });
+
+            modelBuilder.Entity<FlightStatusType>(entity =>
+            {
+                entity.HasKey(e => e.FlightStatusId)
+                    .HasName("PK__FlightSt__A09ECC7D5A11CF35");
+
+                entity.ToTable("FlightStatusType");
+
+                entity.Property(e => e.StatusName).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Gate>(entity =>
