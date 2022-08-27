@@ -16,6 +16,15 @@
             this.dbSet = context.Set<T>();
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual void Save()
+        {
+            context?.SaveChanges();
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -25,6 +34,7 @@
         public virtual IEnumerable<T> GetWithSql(string Query, params object[] Parameters)
         {
             var result = dbSet.FromSqlRaw(Query, Parameters);            
+
             return result;
              
         }
@@ -56,9 +66,9 @@
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public virtual T GetById(int Id)
+        public virtual async Task<T> GetById(int Id)
         {
-            var result = dbSet.Find(Id);            
+            var result = await dbSet.FindAsync(Id);            
             return result!;
         }
 

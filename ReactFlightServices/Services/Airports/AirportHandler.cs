@@ -39,14 +39,6 @@
         /// <summary>
         /// 
         /// </summary>
-        public async void Save()
-        {
-            await context.SaveChangesAsync();   
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
         {

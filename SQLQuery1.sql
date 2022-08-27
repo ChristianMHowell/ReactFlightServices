@@ -1,0 +1,1 @@
+﻿ALTER TABLE Vendor ADD VendorOpen BIT NOT NULL

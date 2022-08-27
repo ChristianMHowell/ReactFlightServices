@@ -6,8 +6,32 @@ namespace ReactFlightServices.Endpoints
     {
         public void DefineEndpoints(WebApplication app)
         {
-            app.MapPost("/Airport/Open/{id:int}", OpenAirport);
+            app.MapGet("/FlightServices", FlightServiceHome);
+            app.MapGet("/Airport", AirportHome);
+            app.MapPost("/Airport/Open", OpenAirport);
 
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private async Task<IResult> FlightServiceHome([FromServices] AirportHandler Airports)
+        {
+            IEnumerable<Airport> airports = Airports.AIrportRepository.Get(null, null, "Terminal, Gate, Vendor");
+
+            return Results.Ok(airports.ToList());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private async Task<IResult> AirportHome([FromServices] AirportHandler Airport, [FromBody] DateTime LoginTime, int AirportId)
+        {
+            
+
+            return Results.Ok();
         }
 
         /// <summary>
@@ -91,6 +115,9 @@ namespace ReactFlightServices.Endpoints
         {
             services.AddTransient<IUnitOfWork, AirlineHandler>();
             services.AddTransient<IUnitOfWork, AirportHandler>();
+            services.AddTransient<IUnitOfWork, GateHandler>();
+
+
         }
     }
 }
