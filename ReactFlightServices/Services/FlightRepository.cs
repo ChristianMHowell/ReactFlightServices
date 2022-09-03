@@ -20,9 +20,10 @@
         /// <summary>
         /// 
         /// </summary>
-        public virtual void Save()
+        public virtual async Task<bool> Save()
         {
-            context?.SaveChanges();
+            var result = await context!.SaveChangesAsync();
+            return result > 0;
         }
 
         /// <summary>
@@ -31,12 +32,22 @@
         /// <param name="Query"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public virtual IEnumerable<T> GetWithSql(string Query, params object[] Parameters)
+        public virtual async Task<IEnumerable<T>> GetWithSql(string Query, params object[] Parameters)
         {
-            var result = dbSet.FromSqlRaw(Query, Parameters);            
-
-            return result;
+            var result = dbSet.FromSqlRaw(Query, Parameters); 
+            return await result.ToListAsync();
              
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Query"></param>
+        /// <returns></returns>
+        public virtual async Task<bool> UpdateSql(string Query)
+        {
+            var result = await context!.Database.ExecuteSqlRawAsync(Query);
+            return result > 0;
         }
 
         /// <summary>
@@ -46,7 +57,7 @@
         /// <param name="OrderBy"></param>
         /// <param name="Includes"></param>
         /// <returns></returns>
-        public virtual IEnumerable<T> Get(Expression<Func<T, bool>>? filter = null, 
+        public virtual async Task<IEnumerable<T>> Get(Expression<Func<T, bool>>? filter = null, 
             Func<IQueryable<T>, IOrderedQueryable<T>>? OrderBy = null, string? Includes = null)
         {
 
@@ -56,7 +67,7 @@
             if (Includes?.Length > 1)
                 foreach (var item in Includes.Split(","))
                     query.Include(item);
-            var result = OrderBy is not null ? OrderBy(query) : query;
+            var result = OrderBy is not null ? await OrderBy(query).ToListAsync() : await query.ToListAsync();
 
             return result;
         }

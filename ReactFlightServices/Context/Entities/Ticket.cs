@@ -16,6 +16,8 @@ namespace ReactFlightServices.Context.Entities
         public decimal TicketPrice { get; set; }
         public int TicketFlight { get; set; }
         public DateTime TicketDate { get; set; }
+        public int TicketRow { get; set; }
+        public string TicketSeat { get; set; } = null!;
 
         public virtual Flight TicketFlightNavigation { get; set; } = null!;
         public virtual ICollection<PassengerTicket> PassengerTickets { get; set; }

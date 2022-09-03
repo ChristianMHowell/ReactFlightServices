@@ -1,4 +1,5 @@
 ﻿global using ReactFlightServices.Services;
+global using ReactFlightServices.Services.Workers;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.IdentityModel.Tokens;

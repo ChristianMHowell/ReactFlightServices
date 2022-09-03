@@ -8,7 +8,7 @@
         /// </summary>
         /// <param name="airline"></param>
         /// <returns></returns>
-        Task<Airline> AddAirline(Airline airline);
+        Task<bool> AddAirline(Airline airline);
 
         /// <summary>
         /// 
@@ -42,14 +42,22 @@
         /// <param name="NewMember"></param>
         /// <param name="AirlineId"></param>
         /// <returns></returns>
-        Task<Crew> AddCrewToAirline(Crew NewMember, int AirlineId);
+        Task<bool> AddCrewToAirline(Crew NewMember, int AirlineId);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="NewMember"></param>
         /// <returns></returns>
-        Task<Crew> NewCrewMember (Crew NewMember);
+        Task<bool> NewCrewMember (Crew NewMember);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="NewPilot"></param>
+        /// <param name="FlightId"></param>
+        /// <returns></returns>
+        Task<bool> AddPilotToFlight(Pilot NewPilot, int FlightId);
 
     }
 }

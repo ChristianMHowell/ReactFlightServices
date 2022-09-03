@@ -16,69 +16,55 @@ namespace ReactFlightServices.Endpoints
         /// 
         /// </summary>
         /// <returns></returns>
-        private async Task<IResult> FlightServiceHome([FromServices] AirportHandler Airports)
+        private async Task<IResult> FlightServiceHome([FromServices] IAirportWork Airports)
         {
-            IEnumerable<Airport> airports = Airports.AIrportRepository.Get(null, null, "Terminal, Gate, Vendor");
-
-            return Results.Ok(airports.ToList());
+            var airports = await Airports.GetAirports();
+            return Results.Ok(airports);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        private async Task<IResult> AirportHome([FromServices] AirportHandler Airport, [FromBody] DateTime LoginTime, int AirportId)
+        private async Task<IResult> AirportHome([FromServices] IAirportWork Airport, [FromBody] DateTime LoginTime, int AirportId)
+        {
+            var result = await Airport.GetAirport(AirportId);
+            return Results.Ok(result);
+        }      
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="TerminalId"></param>
+        /// <returns></returns>
+        private async Task<IResult> OpenTerminal([FromServices] IAirportWork context, int TerminalId)
+        {
+            var result = await context.OpenTerminal(TerminalId);
+            return Results.Ok(result);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="TerminalId"></param>
+        /// <returns></returns>
+        private async Task<IResult> CloseTerminal([FromServices] IAirportWork context, int TerminalId)
+        {
+            var result = await context.CloseTerminal(TerminalId);
+            return Results.Ok(result);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="GateId"></param>
+        /// <returns></returns>
+        private async Task<IResult> OpenGate([FromServices] IAirportWork context, int GateId)
         {
             
-
-            return Results.Ok();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="AirportId"></param>
-        /// <returns></returns>
-        private async Task<IResult> OpenAirport([FromServices] FlightServicesContext context, int AirportId)
-        {
-
-            return Results.Ok();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="Airport"></param>
-        /// <returns></returns>
-        private async Task<IResult> CloseAirport([FromServices] FlightServicesContext context, int Airport)
-        {
-
-            return Results.Ok();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="TerminalId"></param>
-        /// <returns></returns>
-        private async Task<IResult> OpenTerminal([FromServices] FlightServicesContext context, int TerminalId)
-        {
-
-            return Results.Ok();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="TerminalId"></param>
-        /// <returns></returns>
-        private async Task<IResult> CloseTerminal([FromServices] FlightServicesContext context, int TerminalId)
-        {
-
             return Results.Ok();
         }
 
@@ -88,19 +74,7 @@ namespace ReactFlightServices.Endpoints
         /// <param name="context"></param>
         /// <param name="GateId"></param>
         /// <returns></returns>
-        private async Task<IResult> OpenGate([FromServices] FlightServicesContext context, int GateId)
-        {
-
-            return Results.Ok();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="GateId"></param>
-        /// <returns></returns>
-        private async Task<IResult> CloseGate([FromServices] FlightServicesContext context, int GateId)
+        private async Task<IResult> CloseGate([FromServices] IAirportWork context, int GateId)
         {
 
             return Results.Ok();
@@ -113,9 +87,8 @@ namespace ReactFlightServices.Endpoints
         /// <param name="services"></param>
         public void DefineServices(IServiceCollection services)
         {
-            services.AddTransient<IUnitOfWork, AirlineHandler>();
-            services.AddTransient<IUnitOfWork, AirportHandler>();
-            services.AddTransient<IUnitOfWork, GateHandler>();
+
+            services.AddScoped<IAirportWork, AirportWorker>();
 
 
         }

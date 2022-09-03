@@ -9,7 +9,10 @@
         /// <param name="app"></param>
         public void DefineEndpoints(WebApplication app)
         {
-            
+            app.MapPost("/Airline/AddCrewMember", AddCrewMember);
+
+            app.MapPost("/Airline/UpdateCrewMember", UpdateCrewMember);
+
         }
 
         /// <summary>
@@ -19,7 +22,7 @@
         /// <param name="Token"></param>
         /// <param name="NewCrew"></param>
         /// <returns></returns>
-        private async Task<IResult> AddCrewMember([FromServices] CrewHandler Handler, [FromHeader] string Token, [FromBody] Crew NewCrew)
+        private async Task<IResult> AddCrewMember([FromServices] IAirlineWork airlineWorker, [FromHeader] string Token, [FromBody] Crew NewCrew)
         {
 
             return Results.Ok();
@@ -32,7 +35,7 @@
         /// <param name="Token"></param>
         /// <param name=""></param>
         /// <returns></returns>
-        private async Task<IResult> UpdateCrewMember([FromServices] CrewHandler Handler, [FromHeader] string Token, [FromBody] Crew CrewMember)
+        private async Task<IResult> UpdateCrewMember([FromServices] IAirlineWork airlineWorker, [FromHeader] string Token, [FromBody] Crew CrewMember)
         {
 
 
@@ -47,7 +50,7 @@
         /// <param name="Cremember"></param>
         /// <param name="FlightId"></param>
         /// <returns></returns>
-        private async Task<IResult> AddCrewMemberFlight([FromServices] CrewHandler Handler, [FromHeader] string Token, [FromBody] Crew Cremember, int FlightId)
+        private async Task<IResult> AddCrewMemberFlight([FromServices] IAirlineWork airlineWorker, [FromHeader] string Token, [FromBody] Crew CrewMember, int FlightId)
         {
 
             return Results.Ok();
@@ -59,7 +62,7 @@
         /// <param name="services"></param>
         public void DefineServices(IServiceCollection services)
         {
-            services.AddTransient<IUnitOfWork, CrewHandler>();
+            services.AddScoped<IAirlineWork, AirlineWorker>();
         }
     }
 }

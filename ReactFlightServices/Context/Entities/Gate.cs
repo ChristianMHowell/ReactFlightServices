@@ -13,6 +13,7 @@ namespace ReactFlightServices.Context.Entities
         public int GateId { get; set; }
         public int GateNumber { get; set; }
         public string GateTerminal { get; set; } = null!;
+        public bool GateOpen { get; set; }
 
         public virtual ICollection<FlightGate> FlightGates { get; set; }
     }

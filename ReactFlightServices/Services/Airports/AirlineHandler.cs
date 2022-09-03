@@ -30,6 +30,29 @@
         /// <summary>
         /// 
         /// </summary>
+        public FlightRepository<Pilot> PilotRepository { get => new(context); }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public FlightRepository<Crew> CrewRepository { get => new(context); }
+
+        
+        public FlightRepository<FlightPilot> FlightsPilotRepository { get => new(context); }
+
+
+        public FlightRepository<FlightGate> FlightsGateRepository { get => new(context); }
+
+
+        public FlightRepository<CrewFlight> CrewFlightRepository { get => new(context); }
+
+
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
         {

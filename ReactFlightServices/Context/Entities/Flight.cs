@@ -7,6 +7,7 @@ namespace ReactFlightServices.Context.Entities
     {
         public Flight()
         {
+            CrewFlights = new HashSet<CrewFlight>();
             FlightGates = new HashSet<FlightGate>();
             FlightPilots = new HashSet<FlightPilot>();
             Tickets = new HashSet<Ticket>();
@@ -29,6 +30,7 @@ namespace ReactFlightServices.Context.Entities
 
         public virtual Airline FlightAirlineNavigation { get; set; } = null!;
         public virtual FlightStatusType FlightStatusNavigation { get; set; } = null!;
+        public virtual ICollection<CrewFlight> CrewFlights { get; set; }
         public virtual ICollection<FlightGate> FlightGates { get; set; }
         public virtual ICollection<FlightPilot> FlightPilots { get; set; }
         public virtual ICollection<Ticket> Tickets { get; set; }

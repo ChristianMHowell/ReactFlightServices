@@ -20,6 +20,8 @@ namespace ReactFlightServices.Context
         public virtual DbSet<Airline> Airlines { get; set; } = null!;
         public virtual DbSet<Airport> Airports { get; set; } = null!;
         public virtual DbSet<Crew> Crews { get; set; } = null!;
+        public virtual DbSet<CrewAirline> CrewAirlines { get; set; } = null!;
+        public virtual DbSet<CrewFlight> CrewFlights { get; set; } = null!;
         public virtual DbSet<Flight> Flights { get; set; } = null!;
         public virtual DbSet<FlightGate> FlightGates { get; set; } = null!;
         public virtual DbSet<FlightPilot> FlightPilots { get; set; } = null!;
@@ -49,6 +51,10 @@ namespace ReactFlightServices.Context
             {
                 entity.ToTable("Airline");
 
+                entity.Property(e => e.AirlineAddress).HasMaxLength(128);
+
+                entity.Property(e => e.AirlineCity).HasMaxLength(64);
+
                 entity.Property(e => e.AirlineName).HasMaxLength(50);
             });
 
@@ -59,6 +65,10 @@ namespace ReactFlightServices.Context
                 entity.Property(e => e.AirportCity).HasMaxLength(50);
 
                 entity.Property(e => e.AirportName).HasMaxLength(128);
+
+                entity.Property(e => e.TimeClose).HasColumnType("time(2)");
+
+                entity.Property(e => e.TimeOpen).HasColumnType("time(2)");
             });
 
             modelBuilder.Entity<Crew>(entity =>
@@ -82,6 +92,46 @@ namespace ReactFlightServices.Context
                 entity.Property(e => e.CrewState).HasMaxLength(50);
 
                 entity.Property(e => e.CrewZip).HasMaxLength(10);
+            });
+
+            modelBuilder.Entity<CrewAirline>(entity =>
+            {
+                entity.HasKey(e => e.AirlineCrewId)
+                    .HasName("PK__CrewAirl__47880D31A1809E9E");
+
+                entity.ToTable("CrewAirline");
+
+                entity.HasOne(d => d.Airline)
+                    .WithMany(p => p.CrewAirlines)
+                    .HasForeignKey(d => d.AirlineId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CrewAirline_Airline");
+
+                entity.HasOne(d => d.Crew)
+                    .WithMany(p => p.CrewAirlines)
+                    .HasForeignKey(d => d.CrewId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CrewAirline_Crew");
+            });
+
+            modelBuilder.Entity<CrewFlight>(entity =>
+            {
+                entity.HasKey(e => e.CrewFilghtId)
+                    .HasName("PK__CrewFlig__45D0093AC59031A8");
+
+                entity.ToTable("CrewFlight");
+
+                entity.HasOne(d => d.Crew)
+                    .WithMany(p => p.CrewFlights)
+                    .HasForeignKey(d => d.CrewId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CrewFlight_Crew");
+
+                entity.HasOne(d => d.Flight)
+                    .WithMany(p => p.CrewFlights)
+                    .HasForeignKey(d => d.FlightId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CrewFlight_Flight");
             });
 
             modelBuilder.Entity<Flight>(entity =>
@@ -252,6 +302,10 @@ namespace ReactFlightServices.Context
                 entity.Property(e => e.TicketNumber).HasMaxLength(5);
 
                 entity.Property(e => e.TicketPrice).HasColumnType("money");
+
+                entity.Property(e => e.TicketSeat)
+                    .HasMaxLength(1)
+                    .IsFixedLength();
 
                 entity.HasOne(d => d.TicketFlightNavigation)
                     .WithMany(p => p.Tickets)

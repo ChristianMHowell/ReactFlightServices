@@ -6,7 +6,7 @@
         /// Retrieves all Flight Service Hubs
         /// </summary>
         /// <returns>List Of Airports</returns>
-        List<Airport> GetAirports();
+        Task<List<Airport>> GetAirports();
 
         /// <summary>
         /// 
@@ -15,19 +15,7 @@
         /// <returns></returns>
         Task<Airport> GetAirport(int AirportId);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="AirportId"></param>
-        /// <returns></returns>
-        Task<bool> OpenAirport(int AirportId);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="AirportId"></param>
-        /// <returns></returns>
-        Task<bool> CloseAirport(int AirportId);
+        
 
         /// <summary>
         /// 
@@ -49,7 +37,7 @@
         /// <param name="NewVendor"></param>
         /// <param name="AirportId"></param>
         /// <returns></returns>
-        Task<Vendor> AddVendorToAirport(Vendor NewVendor, int AirportId);
+        Task<bool> AddVendorToAirport(Vendor NewVendor);
 
 
 
