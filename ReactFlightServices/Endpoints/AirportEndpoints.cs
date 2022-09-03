@@ -8,7 +8,6 @@ namespace ReactFlightServices.Endpoints
         {
             app.MapGet("/FlightServices", FlightServiceHome);
             app.MapGet("/Airport", AirportHome);
-            app.MapPost("/Airport/Open", OpenAirport);
 
         }
 
