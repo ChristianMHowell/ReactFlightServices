@@ -36,6 +36,12 @@
         public FlightRepository<TicketClerk> TicketClerkRepository { get => new(context); }
 
 
+        public FlightRepository<Vendor> VendorRepository { get => new(context); }
+
+
+
+
+
         /// <summary>
         /// 
         /// </summary>

@@ -7,7 +7,7 @@
         /// </summary>
         /// <param name="terminalId"></param>
         /// <returns></returns>
-        Task<Terminal> GetTerminalById(Terminal terminalId);
+        Task<Terminal> GetTerminalById(int TerminalId);
 
         /// <summary>
         /// 
@@ -36,7 +36,7 @@
         /// <param name="NewTerminal"></param>
         /// <param name="AirportId"></param>
         /// <returns></returns>
-        Task<Terminal> NewTerminal(Terminal NewTerminal, int AirportId);
+        Task<bool> NewTerminal(Terminal NewTerminal);
 
         /// <summary>
         /// 
@@ -44,6 +44,20 @@
         /// <param name="TerminalId"></param>
         /// <returns></returns>
         Task<List<Vendor>> GetVendorsByTerminal(int TerminalId);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Gateid"></param>
+        /// <returns></returns>
+        Task<bool> OpenGate(int Gateid);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="GateId"></param>
+        /// <returns></returns>
+        Task<bool> CloseGate(int GateId);
 
 
     }

@@ -1,1 +1,7 @@
-﻿ALTER TABLE Vendor ADD VendorOpen BIT NOT NULL
+﻿ALTER TABLE Flight ADD FlightSeats INT NOT NULL
+
+
+ALTER TABLE Flight DROP COLUMN FlightStopover
+
+
+ALTER TABLE Flight ALTER COLUMN StopoverLocation INT NULL

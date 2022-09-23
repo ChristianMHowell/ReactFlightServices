@@ -40,6 +40,16 @@
         Task<bool> AddVendorToAirport(Vendor NewVendor);
 
 
+        Task<bool> UpdateVendor(Vendor OldVendor);
+
+
+        Task<bool> OpenVendor(int VendorId);
+
+
+        Task<bool> CloseVendor(int VendorId);   
+
+
+
 
     }
 }

@@ -57,7 +57,7 @@
         /// <param name="OrderBy"></param>
         /// <param name="Includes"></param>
         /// <returns></returns>
-        public virtual async Task<IEnumerable<T>> Get(Expression<Func<T, bool>>? filter = null, 
+        public virtual async Task<List<T>> Get(Expression<Func<T, bool>>? filter = null, 
             Func<IQueryable<T>, IOrderedQueryable<T>>? OrderBy = null, string? Includes = null)
         {
 
@@ -98,9 +98,12 @@
         /// 
         /// </summary>
         /// <param name="ItemToAdd"></param>
-        public virtual void Add(T ItemToAdd)
-        {
+        public async virtual Task<int> Add(T ItemToAdd)
+        {            
             context!.Entry(ItemToAdd).State = EntityState.Added;
+            var result = await context!.SaveChangesAsync();
+            
+            return result;
         }
 
 

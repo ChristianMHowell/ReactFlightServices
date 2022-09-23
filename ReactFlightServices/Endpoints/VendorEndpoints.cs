@@ -68,7 +68,7 @@
         /// <param name="services"></param>
         public void DefineServices(IServiceCollection services)
         {
-            services.AddScoped<IUnitOfWork, VendorHandler>();
+            services.AddScoped<IAirportWork, AirportWorker>();
         }
     }
 }

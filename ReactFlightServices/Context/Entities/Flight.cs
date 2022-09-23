@@ -18,15 +18,15 @@ namespace ReactFlightServices.Context.Entities
         public TimeSpan FlightTIme { get; set; }
         public int FlightOrigin { get; set; }
         public int FlightEnd { get; set; }
-        public bool FlightStopover { get; set; }
         public int FlightAirline { get; set; }
         public int FLightRecurrence { get; set; }
-        public int FlightDistance { get; set; }
+        public double FlightDistance { get; set; }
         public double FlightDuration { get; set; }
-        public int FlightCapacity { get; set; }
-        public int StopoverLocation { get; set; }
+        public int? StopoverLocation { get; set; }
         public DateTime FlightDate { get; set; }
         public int FlightStatus { get; set; }
+        public int FlightRows { get; set; }
+        public int FlightSeats { get; set; }
 
         public virtual Airline FlightAirlineNavigation { get; set; } = null!;
         public virtual FlightStatusType FlightStatusNavigation { get; set; } = null!;

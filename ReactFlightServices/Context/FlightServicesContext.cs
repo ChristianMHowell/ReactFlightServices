@@ -19,6 +19,7 @@ namespace ReactFlightServices.Context
 
         public virtual DbSet<Airline> Airlines { get; set; } = null!;
         public virtual DbSet<Airport> Airports { get; set; } = null!;
+        public virtual DbSet<AirportManager> AirportManagers { get; set; } = null!;
         public virtual DbSet<Crew> Crews { get; set; } = null!;
         public virtual DbSet<CrewAirline> CrewAirlines { get; set; } = null!;
         public virtual DbSet<CrewFlight> CrewFlights { get; set; } = null!;
@@ -29,11 +30,14 @@ namespace ReactFlightServices.Context
         public virtual DbSet<Gate> Gates { get; set; } = null!;
         public virtual DbSet<Passenger> Passengers { get; set; } = null!;
         public virtual DbSet<PassengerTicket> PassengerTickets { get; set; } = null!;
+        public virtual DbSet<Payment> Payments { get; set; } = null!;
         public virtual DbSet<Pilot> Pilots { get; set; } = null!;
         public virtual DbSet<Terminal> Terminals { get; set; } = null!;
+        public virtual DbSet<TicektPayment> TicektPayments { get; set; } = null!;
         public virtual DbSet<Ticket> Tickets { get; set; } = null!;
         public virtual DbSet<TicketClerk> TicketClerks { get; set; } = null!;
         public virtual DbSet<TicketClerkTicket> TicketClerkTickets { get; set; } = null!;
+        public virtual DbSet<TicketPayment> TicketPayments { get; set; } = null!;
         public virtual DbSet<Vendor> Vendors { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -69,6 +73,34 @@ namespace ReactFlightServices.Context
                 entity.Property(e => e.TimeClose).HasColumnType("time(2)");
 
                 entity.Property(e => e.TimeOpen).HasColumnType("time(2)");
+            });
+
+            modelBuilder.Entity<AirportManager>(entity =>
+            {
+                entity.HasKey(e => e.ManagerId)
+                    .HasName("PK__AirportM__3BA2AAE1387FA0EC");
+
+                entity.ToTable("AirportManager");
+
+                entity.Property(e => e.ManagerAddress).HasMaxLength(50);
+
+                entity.Property(e => e.ManagerCity).HasMaxLength(50);
+
+                entity.Property(e => e.ManagerFirst).HasMaxLength(50);
+
+                entity.Property(e => e.ManagerLast).HasMaxLength(50);
+
+                entity.Property(e => e.ManagerMiddle).HasMaxLength(50);
+
+                entity.Property(e => e.ManagerState).HasMaxLength(50);
+
+                entity.Property(e => e.ManagerZip).HasMaxLength(10);
+
+                entity.HasOne(d => d.ManagerAirportNavigation)
+                    .WithMany(p => p.AirportManagers)
+                    .HasForeignKey(d => d.ManagerAirport)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_AirportManager_Airport");
             });
 
             modelBuilder.Entity<Crew>(entity =>
@@ -255,6 +287,25 @@ namespace ReactFlightServices.Context
                     .HasConstraintName("FK_PassengerTicket_Ticket");
             });
 
+            modelBuilder.Entity<Payment>(entity =>
+            {
+                entity.ToTable("Payment");
+
+                entity.Property(e => e.PaymentCode).HasMaxLength(8);
+
+                entity.Property(e => e.PaymentExpire).HasColumnType("date");
+
+                entity.Property(e => e.PaymentNumber).HasMaxLength(50);
+
+                entity.Property(e => e.PaymentType).HasMaxLength(20);
+
+                entity.HasOne(d => d.PaymentPassengerNavigation)
+                    .WithMany(p => p.Payments)
+                    .HasForeignKey(d => d.PaymentPassenger)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Payment_Passenger");
+            });
+
             modelBuilder.Entity<Pilot>(entity =>
             {
                 entity.ToTable("Pilot");
@@ -291,6 +342,14 @@ namespace ReactFlightServices.Context
                     .HasForeignKey(d => d.AirportId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Terminal_Airport");
+            });
+
+            modelBuilder.Entity<TicektPayment>(entity =>
+            {
+                entity.HasKey(e => e.TicketPaymentId)
+                    .HasName("PK__TicektPa__04E8446564E127DA");
+
+                entity.ToTable("TicektPayment");
             });
 
             modelBuilder.Entity<Ticket>(entity =>
@@ -352,6 +411,23 @@ namespace ReactFlightServices.Context
                     .HasForeignKey(d => d.TicketId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ClerkTickets_Ticket");
+            });
+
+            modelBuilder.Entity<TicketPayment>(entity =>
+            {
+                entity.ToTable("TicketPayment");
+
+                entity.HasOne(d => d.Payment)
+                    .WithMany(p => p.TicketPayments)
+                    .HasForeignKey(d => d.PaymentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_TicketPayment_Payment");
+
+                entity.HasOne(d => d.Ticket)
+                    .WithMany(p => p.TicketPayments)
+                    .HasForeignKey(d => d.TicketId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_TicketPayment_Ticket");
             });
 
             modelBuilder.Entity<Vendor>(entity =>

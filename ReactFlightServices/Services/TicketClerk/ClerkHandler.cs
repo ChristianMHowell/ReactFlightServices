@@ -34,6 +34,17 @@ public class ClerkHandler : IUnitOfWork
     /// </summary>
     public FlightRepository<TicketClerkTicket> TicketClerkTicketRepository { get => new(context); } 
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public FlightRepository<TicketClerk> TIcketClerkRepository { get => new(context); }
+
+
+    public FlightRepository<TicketPayment> TicketPaymentRepository {  get => new(context); }
+
+
+    public FlightRepository<Payment> PaymentRepository { get => new(context); }
+
 
 
     /// <summary>

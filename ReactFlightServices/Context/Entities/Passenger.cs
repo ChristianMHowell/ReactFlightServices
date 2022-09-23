@@ -8,6 +8,7 @@ namespace ReactFlightServices.Context.Entities
         public Passenger()
         {
             PassengerTickets = new HashSet<PassengerTicket>();
+            Payments = new HashSet<Payment>();
         }
 
         public int PassengerId { get; set; }
@@ -24,5 +25,6 @@ namespace ReactFlightServices.Context.Entities
         public bool HasRealId { get; set; }
 
         public virtual ICollection<PassengerTicket> PassengerTickets { get; set; }
+        public virtual ICollection<Payment> Payments { get; set; }
     }
 }

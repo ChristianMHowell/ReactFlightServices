@@ -9,6 +9,21 @@
         public FlightRepository<Terminal> TerminalRepository { get => new(context!); }
 
 
+        public FlightRepository<Gate> GateRepository { get => new(context!); }
+
+
+        public FlightRepository<FlightGate> FlightGateRepository { get => new(context!); }
+
+
+        public FlightRepository<Vendor> VendorRepository { get => new(context!); }
+
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)

@@ -6,7 +6,7 @@ namespace ReactFlightServices.Endpoints
     {
         public void DefineEndpoints(WebApplication app)
         {
-            app.MapGet("/FlightServices", FlightServiceHome);
+            app.MapGet("/Airports", FlightServiceHome);
             app.MapGet("/Airport", AirportHome);
 
         }
@@ -61,10 +61,10 @@ namespace ReactFlightServices.Endpoints
         /// <param name="context"></param>
         /// <param name="GateId"></param>
         /// <returns></returns>
-        private async Task<IResult> OpenGate([FromServices] IAirportWork context, int GateId)
-        {
-            
-            return Results.Ok();
+        private async Task<IResult> OpenGate([FromServices] ITerminalWork context, int GateId)
+        {           
+            var result = await context.OpenGate(GateId);
+            return Results.Ok(result);
         }
 
         /// <summary>
@@ -73,9 +73,9 @@ namespace ReactFlightServices.Endpoints
         /// <param name="context"></param>
         /// <param name="GateId"></param>
         /// <returns></returns>
-        private async Task<IResult> CloseGate([FromServices] IAirportWork context, int GateId)
+        private async Task<IResult> CloseGate([FromServices] ITerminalWork context, int GateId)
         {
-
+            
             return Results.Ok();
         }
                
@@ -88,6 +88,7 @@ namespace ReactFlightServices.Endpoints
         {
 
             services.AddScoped<IAirportWork, AirportWorker>();
+            services.AddScoped<ITerminalWork, TerminalWorker>();
 
 
         }

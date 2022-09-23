@@ -30,12 +30,24 @@
         }
 
 
-        public Task<bool> CloseTerminal(int TerminalId)
+        public async Task<bool> CloseTerminal(int TerminalId)
         {
-            var query = @"UPDATE Terminal SET TerminalOpen = 0 WHERE TerminalId = {TerminalId}";
-            var result = airport.TerminalRepository.UpdateSql(query);
+            var query = $"UPDATE Terminal SET TerminalOpen = 0 WHERE TerminalId = {TerminalId}";
+            var result = await airport.TerminalRepository.UpdateSql(query);
             return result;
 
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="VendorId"></param>
+        /// <returns></returns>
+        public async Task<bool> CloseVendor(int VendorId)
+        {
+            var query = $"UPDATE Vendor SET VendorOpen = 0 WHERE VendorId = {VendorId}";
+            var result = await airport.VendorRepository.UpdateSql(query);
+            return result;
         }
 
         /// <summary>
@@ -59,13 +71,41 @@
             return result.ToList();
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="TerminalId"></param>
+        /// <returns></returns>
         public Task<bool> OpenTerminal(int TerminalId)
         {
             var query = @"UPDATE Terminal SET TerminalOpen = 1 WHERE TerminalId = {TerminalId}";
 
             var result = airport.TerminalRepository.UpdateSql(query);
             return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="VendorId"></param>
+        /// <returns></returns>
+        public async Task<bool> OpenVendor(int VendorId)
+        {
+            var query = $"UPDATE Vendor SET VendorOpen = 1 WHERE VendorId = {VendorId}";
+            var result = await airport.VendorRepository.UpdateSql(query);
+            return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="UpdatedVendor"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateVendor(Vendor UpdatedVendor)
+        {
+            
+            airport.VendorRepository.Update(UpdatedVendor);
+            return true;
         }
     }
 }

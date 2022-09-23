@@ -9,6 +9,7 @@ namespace ReactFlightServices.Context.Entities
         {
             PassengerTickets = new HashSet<PassengerTicket>();
             TicketClerkTickets = new HashSet<TicketClerkTicket>();
+            TicketPayments = new HashSet<TicketPayment>();
         }
 
         public int TicketId { get; set; }
@@ -22,5 +23,6 @@ namespace ReactFlightServices.Context.Entities
         public virtual Flight TicketFlightNavigation { get; set; } = null!;
         public virtual ICollection<PassengerTicket> PassengerTickets { get; set; }
         public virtual ICollection<TicketClerkTicket> TicketClerkTickets { get; set; }
+        public virtual ICollection<TicketPayment> TicketPayments { get; set; }
     }
 }

@@ -7,6 +7,7 @@ namespace ReactFlightServices.Context.Entities
     {
         public Airport()
         {
+            AirportManagers = new HashSet<AirportManager>();
             Terminals = new HashSet<Terminal>();
             TicketClerks = new HashSet<TicketClerk>();
         }
@@ -21,6 +22,7 @@ namespace ReactFlightServices.Context.Entities
         public int TerminalCount { get; set; }
         public int VendorCount { get; set; }
 
+        public virtual ICollection<AirportManager> AirportManagers { get; set; }
         public virtual ICollection<Terminal> Terminals { get; set; }
         public virtual ICollection<TicketClerk> TicketClerks { get; set; }
     }
